@@ -63,6 +63,7 @@ function renderLayout(user) {
     // Content Area
     const content = document.createElement('div');
     content.id = 'content';
+    content.className = 'animate-slide-up';
     
     // Top Navbar
     const topnav = document.createElement('nav');

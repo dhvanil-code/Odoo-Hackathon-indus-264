@@ -22,15 +22,18 @@ function renderMovements(movements) {
     }
 
     let html = '';
-    movements.forEach(m => {
+    movements.forEach((m, index) => {
         let badgeType = 'bg-secondary';
         if(m.movement_type === 'receipt') badgeType = 'bg-success';
         if(m.movement_type === 'delivery') badgeType = 'bg-danger';
         if(m.movement_type === 'transfer') badgeType = 'bg-info';
         if(m.movement_type === 'adjustment') badgeType = 'bg-warning';
 
+        // Add stagger effect to rows based on index (up to 4)
+        const staggerClass = index < 4 ? `stagger-${index + 1}` : '';
+
         html += `
-            <tr>
+            <tr class="animate-slide-up ${staggerClass}">
                 <td>${formatDate(m.timestamp)}</td>
                 <td><strong>${m.document_reference || '-'}</strong></td>
                 <td><span class="badge ${badgeType}">${m.movement_type.toUpperCase()}</span></td>
@@ -42,3 +45,4 @@ function renderMovements(movements) {
     });
     tbody.innerHTML = html;
 }
+

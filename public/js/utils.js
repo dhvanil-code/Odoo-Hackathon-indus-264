@@ -45,12 +45,12 @@ function showToast(message, type = 'success') {
     }
 
     const toast = document.createElement('div');
-    toast.className = `toast align-items-center text-white bg-${type} border-0 show`;
+    toast.className = `toast align-items-center text-white bg-${type} border-0 show animate-slide-up`;
     toast.role = 'alert';
     toast.style.marginBottom = '10px';
     toast.innerHTML = `
         <div class="d-flex">
-            <div class="toast-body">
+            <div class="toast-body fw-medium">
                 ${message}
             </div>
             <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close" onclick="this.parentElement.parentElement.remove()"></button>

@@ -309,6 +309,8 @@ body {
     background: var(--card-bg);
     border-radius: 12px;
     overflow: hidden;
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
 }
 
 .table-custom th {
@@ -326,17 +328,60 @@ body {
     vertical-align: middle;
     color: var(--text-main);
     border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s ease;
+}
+
+.table-custom tbody tr {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.table-custom tbody tr:hover {
+    background-color: rgba(67, 97, 238, 0.03) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    z-index: 10;
+    position: relative;
 }
 
 /* Buttons */
 .btn-primary {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:active {
+    transform: scale(0.97);
 }
 
 .btn-primary:hover {
     background-color: var(--secondary-color);
     border-color: var(--secondary-color);
+    box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+}
+
+/* Ripple Effect for Buttons */
+.btn-primary::after {
+    content: "";
+    background: rgba(255, 255, 255, 0.3);
+    display: block;
+    position: absolute;
+    border-radius: 50%;
+    padding-top: 240%;
+    padding-left: 240%;
+    margin-top: -120%;
+    margin-left: -120%;
+    opacity: 0;
+    transition: all 0.8s;
+}
+
+.btn-primary:active::after {
+    padding: 0;
+    margin: 0;
+    opacity: 1;
+    transition: 0s;
 }
 
 /* Responsive */
@@ -442,33 +487,89 @@ body {
     filter: brightness(0.9);
 }
 
-/* Animations */
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
-    20%, 40%, 60%, 80% { transform: translateX(10px); }
+/* Pulse Background Animation */
+@keyframes pulse {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(5%, 5%); }
 }
 
-.shake {
-    animation: shake 0.6s cubic-bezier(.36,.07,.19,.97) both;
+/* Slide Up & Fade In (Page Content) */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-/* Password Toggle Styling */
-.password-field-container {
+.animate-slide-up {
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Staggered Delay Helpers */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+
+/* Skeleton Loader */
+@keyframes shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.skeleton {
+    display: inline-block;
+    height: 1em;
     position: relative;
+    overflow: hidden;
+    background-color: var(--border-color);
+    border-radius: 4px;
+    width: 100%;
 }
 
-.password-toggle {
+.skeleton::after {
     position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: var(--text-muted);
-    z-index: 10;
-    transition: color 0.2s;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0,
+        rgba(255, 255, 255, 0.2) 20%,
+        rgba(255, 255, 255, 0.5) 60%,
+        rgba(255, 255, 255, 0)
+    );
+    animation: shimmer 2s infinite;
+    content: '';
 }
 
-.password-toggle:hover {
-    color: var(--primary-color);
+[data-theme="dark"] .skeleton::after {
+    background-image: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0,
+        rgba(255, 255, 255, 0.05) 20%,
+        rgba(255, 255, 255, 0.1) 60%,
+        rgba(255, 255, 255, 0)
+    );
+}
+
+.skeleton-text { width: 100%; height: 16px; margin-bottom: 8px; }
+.skeleton-title { width: 60%; height: 28px; margin-bottom: 15px; }
+.skeleton-avatar { width: 60px; height: 60px; border-radius: 12px; }
+
+/* Toast Animation Overlay */
+@keyframes toastSlideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.toast.show {
+    animation: toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
