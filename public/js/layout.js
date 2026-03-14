@@ -107,6 +107,10 @@ function renderLayout(user) {
     
     const nodesToMove = Array.from(document.body.childNodes);
     nodesToMove.forEach(node => {
+        // Keep modals and scripts/templates at the body level for correct styling/stacking
+        if (node.classList && (node.classList.contains('modal') || node.tagName === 'SCRIPT' || node.tagName === 'TEMPLATE')) {
+            return;
+        }
         existingContent.appendChild(node);
     });
     
