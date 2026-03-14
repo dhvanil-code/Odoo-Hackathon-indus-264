@@ -101,12 +101,14 @@ function renderLayout(user) {
         </div>
     `;
 
-    // Move existing body content into content area
+    // Move existing body content into content area (safe collection)
     const existingContent = document.createElement('div');
     existingContent.className = 'container-fluid px-4 py-3';
-    while (document.body.firstChild) {
-        existingContent.appendChild(document.body.firstChild);
-    }
+    
+    const nodesToMove = Array.from(document.body.childNodes);
+    nodesToMove.forEach(node => {
+        existingContent.appendChild(node);
+    });
     
     content.appendChild(topnav);
     content.appendChild(existingContent);

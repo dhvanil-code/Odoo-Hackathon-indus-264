@@ -15,8 +15,9 @@ const db = new sqlite3.Database(dbPath, (err) => {
         console.error('Error connecting to the database:', err.message);
     } else {
         console.log('Connected to the SQLite database.');
-        // Enable foreign keys
+        // Enable foreign keys and WAL mode for better concurrency
         db.run('PRAGMA foreign_keys = ON');
+        db.run('PRAGMA journal_mode = WAL');
     }
 });
 
